@@ -1,0 +1,17 @@
+<template>
+    <lightning-layout multiple-rows horizontal-align="center">
+        <template if:true = {carsFound}>
+            <template for:each ={cars.data} for:item="car">
+                <lightning-layout-item key={car.Id} padding="around-small">
+                    <c-lwc-car-tile car={car}></c-lwc-car-tile>
+                </lightning-layout-item>
+            </template>
+        </template>
+        <template if:false = {carsFound}>
+           No cars found
+        </template>
+       
+    </lightning-layout>
+    
+    
+</template>

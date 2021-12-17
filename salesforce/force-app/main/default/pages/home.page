@@ -1,0 +1,20 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+  <head>
+<style>
+body
+{
+background-image:url(https://c.ap2.visual.force.com/resource/1465725848000/background2);
+background-repeat:no-repeat;
+background-size:1000px 600px;
+
+
+}
+</style>
+</head>
+<body>
+<marquee><h1>Next-Generation Worker and Customer Experience</h1></marquee>
+<i style="font-size:31px;color:#FFFFFF;text-align:justify;">
+Appirio is a global services company that helps customers create next-generation Worker and Customer Experiences using the latest cloud technologies. Our free-thinking consultants deliver unmatched customer value by creating actionable strategies that deliver results quickly and help organizations adapt to a new experience-driven era. We do thisby harnessing the power of one of the world’s largest crowdsourcing communities and thousands of pre-built solution accelerators.Appirio is a trusted partner to some of the world’s largest brands, including YP, Cardinal Health, eBay, Facebook, Home Depot,Sony Playstation,I-Phone.
+</i>
+</body>
+</apex:page>

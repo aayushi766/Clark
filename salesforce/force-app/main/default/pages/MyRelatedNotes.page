@@ -1,0 +1,71 @@
+<apex:page controller="myRelatedNotesController">
+<apex:form >
+<apex:pageMessages id="err"/>
+
+<apex:actionFunction action="{!showRelatedItems}" name="showRelatedItems" reRender="accountList,caseList,opportunityList,enter,err" status="status"/>
+<apex:actionFunction action="{!enterNotes}" name="enterNotes,err" reRender="enter" status="status"/>
+
+<apex:actionStatus startText="loading..............." id="status"/>
+
+<apex:pageBlock title="my Related notes">
+
+
+<apex:pageBlockSection title="select type">
+<apex:selectList value="{!type}"  onchange="showRelatedItems()" size="1">
+<apex:selectOptions value="{!typeList}" ></apex:selectOptions>
+
+</apex:selectList>
+
+</apex:pageBlockSection>
+
+
+<apex:outputPanel id="accountList">
+<apex:pageBlockSection title="account List"  rendered="{!showAccountList}">
+<apex:selectList value="{!accountId}" size="1" onchange="enterNotes();return false;" >
+<apex:selectOptions value="{!accountList}"></apex:selectOptions>
+</apex:selectList>
+</apex:pageBlockSection>
+</apex:outputPanel>
+
+<apex:outputPanel id="opportunityList">
+<apex:pageBlockSection title="opportunity List" rendered="{!showOpportunityList}">
+<apex:selectList value="{!opportunityId}" size="1" onchange="enterNotes();return false;">
+<apex:selectOptions value="{!opportunityList}"></apex:selectOptions>
+</apex:selectList>
+</apex:pageBlockSection>
+</apex:outputPanel>
+
+<apex:outputPanel id="caseList">
+<apex:pageBlockSection title="case List" rendered="{!showCasesList}">
+<apex:selectList value="{!caseId}" size="1" onchange="enterNotes();return false;">
+<apex:selectOptions value="{!caseList}"></apex:selectOptions>
+</apex:selectList>
+</apex:pageBlockSection>
+</apex:outputPanel>
+
+<apex:outputPanel id="enter">
+<apex:pageBlockSection rendered="{!showNotes}" title="Enter Notes">
+<apex:outputText value="{!obj.Owner__c}" rendered="{!ownernonEditable}" />
+<br/>
+<br/>
+<apex:inputField value="{!obj.Owner__c}" rendered="{!ownerEditable}" />
+<br/>
+<br/>
+<apex:inputField value="{!obj.Description__c}"  />
+<br/>
+<br/>
+<apex:inputField value="{!obj.Date__c}"  />
+<br/>
+<br/>
+<apex:commandButton action="{!saveMe}" value="save" reRender="err"/>
+<apex:commandButton action="{!resetMe}"  reRender="enter" value="reset"/>
+</apex:pageBlockSection> 
+</apex:outputPanel>
+
+
+</apex:pageBlock>
+
+</apex:form>
+
+  
+</apex:page>

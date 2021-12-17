@@ -1,0 +1,10 @@
+<apex:page >
+<apex:tabPanel id="tab">
+    <apex:tab >
+        <apex:tabPanel >
+            <apex:tab >
+            </apex:tab>
+        </apex:tabPanel>
+    </apex:tab>
+</apex:tabPanel>
+</apex:page>

@@ -1,0 +1,48 @@
+<apex:page showHeader="false" sidebar="false">
+ <head>
+
+<script type="text/javascript">
+
+function sum()
+{
+
+var num=document.getElementById("num").value;
+var j=0,sum=0,sum1=0,num1=0,r;
+num1=parseInt(num);
+for(j=num1;j.toString().length>1;)
+{
+
+while(num1>0)
+{
+
+    r=parseInt(num1%10);
+    sum1=sum1+r;
+    num1=parseInt(num1/10);
+
+
+
+}
+sum=sum1;
+sum1=0;
+num1=sum;
+j=sum;
+
+}
+alert("Sum of the digits are: "+sum);
+}
+
+</script>
+</head>
+
+<body>
+
+
+<form>
+Enter a number: <input type="text" id="num" name="num"/>
+<input type="submit" value="sum" onClick="sum();"/>
+</form>
+
+
+</body>
+
+</apex:page>

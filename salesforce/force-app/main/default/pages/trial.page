@@ -1,0 +1,14 @@
+<apex:page standardController="Account" title="XXX">
+    <apex:pageBlock >
+        <apex:detail relatedList="false"/>
+        <apex:pageblockSection title="Contacts">
+            <c:TabPanel width="1000">
+                <apex:repeat var="contact" value="{!account.contacts}">
+                    <c:Tab title="{!contact.name}">
+                        <apex:detail subject="{!contact.id}" relatedList="false"/>
+                    </c:Tab>
+                </apex:repeat>            
+            </c:TabPanel>
+        </apex:pageblockSection>            
+    </apex:pageBlock>        
+</apex:page>

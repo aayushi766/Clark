@@ -1,0 +1,13 @@
+<apex:page standardController="orderMaster__c">
+<apex:pageBlock >
+<apex:pageBlockSection >
+<apex:outputField value="{!orderMaster__c.id}"></apex:outputField>
+<apex:outputField value="{!orderMaster__c.name}"></apex:outputField>
+<apex:outputField value="{!orderMaster__c.orderNumber__c}"></apex:outputField>
+<apex:outputField value="{!orderMaster__c.id}"></apex:outputField>
+<apex:outputField value="{!orderMaster__c.Total__c}"></apex:outputField>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+  
+</apex:page>

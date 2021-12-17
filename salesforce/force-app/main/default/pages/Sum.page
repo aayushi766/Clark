@@ -1,0 +1,32 @@
+<apex:page >
+<script type="text/javascript">
+  function Sum(){
+   var sum =0;
+   var str = document.getElementById("num").value;
+   
+   var num=0;
+   
+   for(var j=parseInt(str);j>=0;)
+   {
+   while(str)
+   {
+      num=parseInt(str%10);
+      sum=sum+num;
+      str=parseInt(str/10);
+    
+      
+   }
+   
+   str=sum;
+   j=str;
+    
+   }
+   alert(j);
+}
+
+</script>
+  <form >
+  Enter a String/Number: <input type="text" id="num" name="num" /><br />
+  <input type="submit" value="Check" onclick="Sum();"/>
+</form>
+</apex:page>

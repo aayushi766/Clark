@@ -1,0 +1,51 @@
+<apex:page controller="OrderController">
+<apex:form id="frm" >
+  <apex:actionFunction name="calculateTotal" action="{!calculateTotal}" rerender="detail" status="status"/>
+  
+  
+ 
+ <apex:actionStatus startText="Loading.............." id="status"/>
+ <apex:pageBlock title="Enter Order Details Here">
+ <apex:pageBlockSection >
+ 
+ <apex:inputField value="{!omaster.Name}"/>
+ <apex:inputField value="{!omaster.orderNumber__c}"/>
+ <apex:inputField value="{!omaster.Date__c}"/>
+ 
+ </apex:pageBlockSection>
+ 
+<apex:commandButton value="add product" reRender="sectionsPanel" action="{!addSection}"/>
+ 
+ </apex:pageBlock>
+ 
+ <apex:outputPanel >
+ <apex:outputPanel id="sectionsPanel">
+            <apex:repeat value="{!oDetailList}" var="oDetail" >
+
+                <apex:pageBlock title="product">
+                    <apex:pageBlockSection title="Product Details">
+                    <apex:inputField value="{!oDetail.product__c}" id="product1" />
+                    
+                    <apex:inputField value="{!oDetail.Quantity__c}" id="quantity1" onChange="calculateTotal()"  />
+                    
+ 
+                    <apex:outputPanel >
+                    <apex:pageBlockSection id="detail">
+                     <apex:outputField value="{!oDetail.Product__r.Rate__c}"/>
+                    
+                     <apex:outputField value="{!oDetail.Total__c}" id="total"  label="Total"/>
+                     </apex:pageblocksection>
+                     </apex:outputPanel>
+                     
+                     
+                    </apex:pageBlockSection>
+                   
+                </apex:pageBlock>
+
+            </apex:repeat>
+            </apex:outputPanel>
+        </apex:outputPanel>
+         
+ </apex:form>
+  
+</apex:page>

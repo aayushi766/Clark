@@ -1,0 +1,29 @@
+<apex:component id="theTabPanel">
+    <apex:attribute name="width" type="String" description="TODO: Describe me"/>
+   
+    <apex:includeScript value="{!urlFor($Resource.ext, '/ext-2.1/adapter/ext/ext-base.js')}"/>
+    <apex:includeScript value="{!urlFor($Resource.ext, '/ext-2.1/ext-all.js')}"/>
+    
+    <apex:stylesheet value="{!urlFor($Resource.ext, '/ext-2.1/resources/css/ext-all.css')}"/>
+    
+    <apex:outputPanel id="theTab"/>
+
+    <script>
+    var currentTabPanelItems = [];
+    </script>    
+    <apex:componentBody />
+    
+    <script>    
+    Ext.onReady(function() {
+        // basic tabs 1, built from existing content
+        var tabs = new Ext.TabPanel({
+            renderTo: '{!$Component.theTab}',
+            width: '{!nullValue(width, '100%')}',
+            activeTab: 0,
+            frame: true,
+            defaults: {autoHeight: true},
+            items: currentTabPanelItems
+        });
+    });
+    </script>
+</apex:component>

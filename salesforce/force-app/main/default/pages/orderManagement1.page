@@ -1,0 +1,92 @@
+<apex:page controller="OrderController1">
+
+<apex:form >
+  
+  <apex:actionFunction name="getRate" action="{!getRate}" rerender="sectionsPanel" status="status">
+   <apex:param name="param5" value=""/>
+   </apex:actionfunction>
+  <apex:actionFunction name="getTotal" action="{!getTotal}" rerender="sectionsPanel" status="status">
+  <apex:param name="param6" value=""/></apex:actionfunction>
+  
+  
+ 
+ <apex:actionStatus startText="Loading.............." id="status"/>
+ <apex:pageBlock title="Enter Order Details Here" id="oDetailBlock">
+ <apex:pageBlockSection rendered="{!showOMasterInput}">
+ 
+ <apex:inputField value="{!omaster.Name}"/>
+ 
+ <apex:inputField value="{!omaster.Date__c}"/>
+ </apex:pageBlockSection>
+  <apex:pageBlockSection rendered="{!showOMasterOutput}">
+ <apex:outputField value="{!omaster.Name}"/>
+ <apex:outputField value="{!omaster.orderNumber__c}"/>
+ 
+ <apex:outputField value="{!omaster.Date__c}"/>
+  
+ </apex:pageBlockSection>
+  
+      
+      
+      <apex:commandButton value="add product" reRender="sectionsPanel,oDetailBlock" action="{!addSection}"/>
+
+ </apex:pageBlock>
+ 
+ <apex:outputPanel >
+ <apex:outputPanel id="sectionsPanel">
+            
+                <apex:pageBlock title="product" mode="inlineEdit">
+               
+                
+                   <apex:pageBlockTable value="{!oDetailList}" var="oDetail" rendered="{!oDetailList.size>0}">
+                   
+                   <apex:column headerValue="product" ><apex:inputField value="{!oDetail.product__c}" rendered="{!showRowInput[oDetail.identifier__c]}" id="product" onChange="getRate('{!oDetail.identifier__c}')" >
+                   
+                  
+                   </apex:inputField>
+                   <apex:outputField value="{!oDetail.product__c}"  rendered="{!showRowOutput[oDetail.identifier__c]}" id="product1">
+                   
+                    </apex:outputField>
+                   </apex:column>
+                   
+                   
+                   
+                   
+                    
+                    <apex:column headerValue="quantity" ><apex:inputField value="{!oDetail.Quantity__c}" rendered="{!showRowInput[oDetail.identifier__c]}"
+                    onChange="getTotal('{!oDetail.identifier__c}')" ></apex:inputField>
+                    <apex:outputField value="{!oDetail.Quantity__c}"  rendered="{!showRowOutput[oDetail.identifier__c]}" >
+                   </apex:outputField>
+                   
+                   </apex:column>
+                    <apex:column rendered="{!showColumn}" headerValue="price" ><apex:outputText rendered="{!showRate[oDetail.identifier__c]}" value="{!oDetail.rate__c}" /></apex:column>
+                    
+                    
+                     <apex:column rendered="{!showColumnTotal}" headerValue="Total" ><apex:outputText rendered="{!showTotal[oDetail.identifier__c]}" value="{!oDetail.Total1__c}" /></apex:column>
+                    
+                    <apex:column headerValue="Edit" rendered="{!showEditColumn}" > <apex:commandButton value="edit" id="editButton" rendered="{!showEdit[oDetail.identifier__c]}" action="{!edit1}" rerender="sectionsPanel" >
+                    <apex:param name="param1" value="{!oDetail.identifier__c}"/>
+                    </apex:commandButton>
+                    </apex:column>
+                     <apex:column headerValue="save" rendered="{!showSaveColumn}" > <apex:commandButton value="save" id="saveButton" rendered="{!showSave[oDetail.identifier__c]}" action="{!save1}" rerender="sectionsPanel" >
+                    <apex:param name="param2" value="{!oDetail.identifier__c}"/>
+                    <apex:param name="param3" value="{!oDetail.Quantity__c}"/>
+                    <apex:param name="param4" value="{!oDetail.product__c}"/>
+                    </apex:commandButton>
+                    </apex:column>
+                     
+                   </apex:pageBlockTable>
+                   <apex:PageBlockbuttons >
+                   <apex:commandButton value="save" action="{!saveMe}" rendered="{!oDetailList.size>0}"/>
+                   
+                   </apex:pageBlockButtons>
+                </apex:pageBlock>
+
+           
+            
+        </apex:outputPanel>
+        </apex:outputPanel>
+         
+ </apex:form>
+  
+</apex:page>

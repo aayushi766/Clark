@@ -1,0 +1,11 @@
+<apex:component id="theTab">
+    <apex:attribute name="title" type="String" description="TODO: Describe me"/>
+    
+    <div id="{!$Component.theTab}:content" style="display: none">
+        <apex:componentBody />
+    </div>
+     
+    <script>
+    currentTabPanelItems.push({ html: Ext.fly('{!$Component.theTab}:content').dom.innerHTML, title: '{!title}'});
+    </script>
+</apex:component>

@@ -1,0 +1,25 @@
+<template>
+    <lightning-card title="Show All acocunts">
+       
+            <lightning-input type="number" label="Number of Records" onchange={numberOfAccHandler}></lightning-input>
+            <lightning-button label="get accounts" onclick={getaccounts}></lightning-button>
+            <ul>
+            <template if:true={responseReceived}>
+
+            
+            <template for:each={accounts} for:item="acc">
+                <li key={acc.id} >
+                    <div class="slds-p-around_medium lgc-bg">
+                        <lightning-tile label={acc.Name} href="/path/to/somewhere">
+                            <p class="slds-truncate" title={acc.phone}>{acc.phone}</p>
+                        </lightning-tile>
+                    </div>
+                </li>
+            </template>
+        </template>
+
+        </ul>
+        
+
+    </lightning-card>
+</template>

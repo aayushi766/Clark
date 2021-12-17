@@ -1,0 +1,74 @@
+<!--
+/**=====================================================================
+ * Name: FLSProfileAnalysis
+ * Description: Uses the controller class ProfileAnalysisController to retrieve the FLS settings for an object and related profile(s)
+ * Created Date: [06/26/2015]
+ * Created By: [Rajeev Arya] (Appirio)
+ =====================================================================*/
+-->
+<apex:page controller="ProfileAnalysisController" sidebar="false">
+
+    <apex:form >
+    
+    <apex:pageBlock title="Retrieve FLS Settings for selected Object and Profiles" id="check">
+        <apex:facet name="header">
+            <span style="color:brown;font-size:15px;font-weight:bold;">Retrieve FLS Settings for selected Object and Profiles</span>
+        </apex:facet>
+    <apex:pageMessages />
+    
+    <apex:pageBlockSection title="Select an Object and Profile(s)" columns="2">
+        <apex:facet name="header">
+            <span style="color:black;font-size:12px;font-weight:bold;">Select an Object and Profile(s)</span>
+        </apex:facet>   
+        <apex:pageblockSectionItem >
+        <apex:outputlabel value="Select an Object Name" for="object_name"/>
+        <apex:SelectList value="{!val}" size="10" id="object_name" disabled="{!disableObjectDropDown}">
+          <apex:selectOptions value="{!Name}"></apex:selectOptions>
+        </apex:SelectList>
+        </apex:pageblockSectionItem>
+        <apex:pageblockSectionItem >
+        <apex:outputlabel value="Select Profile(s)" for="profile_names"/>
+        <apex:selectList label="Select Profile(s)" id="profile_names" value="{!profiles}" multiselect="true" size="10" disabled="{!disableProfileDropDown}">
+            <apex:selectOptions value="{!items}"/>
+        </apex:selectList>
+        </apex:pageblockSectionItem>
+       
+        
+        </apex:pageblockSection>
+            <apex:pageblockButtons location="bottom">
+            <apex:commandButton value="Click here after selecting object/profiles" action="{!RetrieveSelected}" rerender="check, profile_names, object_name" status="updateStatus"/>
+            
+            <apex:commandButton value="Generate report for FLS" action="{!GenerateExcelReport}"/>
+            </apex:pageblockButtons>
+   
+        <apex:actionStatus id="updateStatus">
+            <apex:facet name="start"> 
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height: 120%;opacity:0.65;width:100%;">
+                    <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                        <img class="waitingImage" src="/img/loading.gif" title="Processing ..." />
+                        <span class="waitingDescription">Processing ...</span>
+                    </div>
+                </div>
+            </apex:facet>
+            <apex:facet name="stop">
+                <apex:outputPanel rendered="{!IF(OR(disableProfileDropDown, disableObjectDropDown), true, false)}">
+                    <p>You have selected:</p>
+                    <apex:dataList title="Profiles" value="{!profiles}" var="p" rendered="{!disableProfileDropDown}">
+                        <apex:facet name="header">
+                            <span style="color:black;font-size:12px;font-weight:bold;">Profile(s) :-</span>
+                        </apex:facet>   
+                        Profile {!p}
+                    </apex:dataList>
+                    <apex:dataList title="Object" value="{!selectedObjectLabel}" var="o" rendered="{!disableObjectDropDown}">
+                        <apex:facet name="header">
+                            <span style="color:black;font-size:12px;font-weight:bold;">Object :-</span>
+                        </apex:facet>   
+                        Object {!o}
+                    </apex:dataList>
+                </apex:outputPanel>
+            </apex:facet>
+        </apex:actionStatus>
+    </apex:pageBlock>
+    </apex:form>
+        
+</apex:page>

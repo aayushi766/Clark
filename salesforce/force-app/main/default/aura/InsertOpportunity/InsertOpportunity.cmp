@@ -1,0 +1,15 @@
+<aura:component controller="insertOpportunity"  implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName" access="global">
+    <aura:attribute name="Opps" type="Opportunity[]"/>
+    <aura:attribute name="Opp" type="Opportunity" default="{'sObjectType':'Opportunity',
+                                                             
+                                                             'Name':'new opportunity'}"/>
+    <lightning:input name="name" value="{!v.Opp.Name}" placeholder="Name"></lightning:input>
+    
+        <lightning:input name="accountId" value="{!v.Opp.account}" placeholder="Enter Account here" type="Account__c"></lightning:input>
+        <!--<lightning:input name="closeDate" value="{!v.Opp.closeDate}" placeholder="Enter closeDate here" type="Date"></lightning:input>-->
+    {!v.Opps}
+    <aura:iteration items="{!v.Opps}" var="o">
+                        {!o.name}                    
+    </aura:iteration>
+    <Lightning:button label="submit" title="submit" onclick="{!c.insertOpportunityA}" />
+</aura:component>

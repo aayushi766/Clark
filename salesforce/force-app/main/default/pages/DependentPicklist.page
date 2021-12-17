@@ -1,0 +1,29 @@
+<apex:page controller="DependentPicklistController">
+<apex:forM >
+<apex:actionFunction name="showContacts" action="{!showContacts}" reRender="c"/>
+<apex:actionFunction name="showContactDetail" action="{!showContactDetail}" reRender="conDetail">
+</apex:actionFunction>
+<apex:selectList id="acc" value="{!accountId}" size="1" required="true" onchange="showContacts()">
+                    <apex:selectOptions value="{!accountList}"></apex:selectOptions>
+         </apex:selectList>
+         <apex:outputPanel id="c">
+         <apex:selectList value="{!contactId}" size="1" rendered="{!showcont}" onchange="showContactDetail()" >
+         <apex:selectOptions value="{!contList}" ></apex:selectOptions>
+         </apex:selectList>
+         </apex:outputPanel>
+         
+         <apex:outputPanel id="conDetail"  >
+         <apex:outputPanel rendered="{!showContDetail}">
+         <table border="1">
+         <tr><th>Name</th><td>{!cont.name}</td>
+         </tr>
+         <tr><th>Phone</th><td>{!cont.Phone}</td>
+         </tr>
+         </table>
+         </apex:outputPanel>
+         </apex:outputPanel>
+         
+         
+         </apex:form>
+ 
+</apex:page>

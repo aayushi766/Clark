@@ -1,0 +1,21 @@
+<!--
+/**=====================================================================
+ * Name: ProfileAnalysis
+ * Description: To be called by the Apex Page FLSProfileAnalysis to render the data in an excel sheet
+ * Created Date: [06/26/2015]
+ * Created By: [Rajeev Arya] (Appirio)
+ =====================================================================*/
+-->
+<apex:page controller="ProfileAnalysisController" contentType="application/vnd.ms-excel#FLSReport_Object_{!selectedObjectLabel}-{!NOW()}.xls"
+showHeader="true" standardStylesheets="true" cache="true">
+  <apex:pageBlock title="FLS Settings for Object {!selectedObjectLabel}">
+    <apex:pageBlockTable style="border: medium solid black" frame="box" rules="all" value="{!ProfileWrapperList}" var="ProfileWrapper">
+      <apex:column value="{!ProfileWrapper.FieldLabel}" headerValue="Field Name" style="border: thin solid black"/>
+      <apex:column value="{!ProfileWrapper.APIName}" headerValue="API Name" style="border: thin solid black"/>
+      <apex:column value="{!ProfileWrapper.DataType}" headerValue="Data Type" style="border: thin solid black"/>
+      <apex:repeat value="{!profiles}" var="key">
+        <apex:column value="{!ProfileWrapper.mapPer[key]}" headerValue="{!key}" style="border: thin solid black"/>
+      </apex:repeat>
+    </apex:pageBlockTable>
+  </apex:pageBlock>
+</apex:page>

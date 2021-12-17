@@ -1,0 +1,10 @@
+<aura:component controller ="BasicComponent" implements="flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name ="accounts" type = "account[]" />
+    <aura:handler name="init" value ="{!this}" action="{!c.doInit}"/>
+    ghjg v.accounts {!v.accounts}
+    <aura:iteration items="{!v.accounts}" var="a">
+        
+        {!a.id}
+    
+    </aura:iteration>
+</aura:component>

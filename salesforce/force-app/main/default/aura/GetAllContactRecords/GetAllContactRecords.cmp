@@ -1,0 +1,24 @@
+<aura:component controller="GetAllContact">
+    <aura:attribute type="Contact[]" name="con"/>
+    <aura:attribute type="Boolean" name="Message"/>
+	
+	<table class="slds-table slds-table_bordered slds-table_cell-buffer" id="part1Table">
+       <thead class="slds-text-title_caps">
+           <tr class="slds-text-heading--label">
+               <th>ID</th><th>Name</th><th>Email</th>
+           </tr>
+       </thead>
+       <tbody>
+           <aura:if isTrue="{!v.Message}">
+               <div class="slds-text-color--error"> No Result Found...</div>
+           </aura:if>
+           <aura:iteration items="{!v.con}" var="obj">
+               <tr class="slds-hint-parent">
+                   <td  data-label="Id">{!obj.Id}</td>
+                   <td class="slds-truncate" data-label="Name">{!obj.Name}</td>
+                   <td class="slds-truncate" data-label="Email">{!obj.Email}</td>
+               </tr>
+           </aura:iteration>
+       </tbody>
+</table>
+</aura:component>

@@ -1,0 +1,15 @@
+<apex:page standardController="Opportunity">
+<apex:form >
+<apex:pageBlock >
+{!$ObjectType.Opportunity.FieldSets.test}
+<apex:pageBlockSection >
+  <apex:repeat value="{!$ObjectType.Opportunity.FieldSets.test}" var="t">
+  <apex:inputField value="{!Opportunity[t]}" />
+</apex:repeat>
+</apex:pageBlockSection>
+<apex:pageblockButtons >
+  <apex:commandButton action="{!save}" value="save"/>
+</apex:pageblockButtons>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

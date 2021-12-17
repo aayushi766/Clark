@@ -1,0 +1,84 @@
+<apex:page standardController="Case" tabStyle="Case">
+     <script type="text/javascript" src="/soap/ajax/38.0/connection.js"></script>
+    <script type="text/javascript" src="/soap/ajax/38.0/apex.js"></script>
+    <apex:includeScript value="/support/console/40.0/integration.js"/>
+
+    <script type="text/javascript">
+    var tufURL = 'https://www.google.com';
+         sforce.connection.sessionId = '{!$Api.Session_ID}';
+        //Sets the title of the current tab to "Case Transactions Detail"
+        window.onload = function setTitleConsole(){
+            if(sforce.console.isInConsole()){
+                var primaryTabId1 = openInConsole('{!Case.Id}');
+                
+                //var result = sforce.console.getFocusedPrimaryTabId();
+                //console.log('primaryTabId1 '+'result.id' );
+                if(primaryTabId1 != null){
+                //console.log('subTab'+primaryTabId1 );
+                    sforce.console.openSubtab(primaryTabId1 , tufURL, true, 'TUF', 'TUF'+rr.id, function(rr){}, null); 
+                }
+                
+                setTitle();
+                
+            }else if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+               
+                sforce.one.back(true);
+                Sfdc.canvas.publisher.publish({name: "publisher.refresh", payload:{ refresh:"true"}});
+                sforce.one.navigateToURL(tufURL);
+                
+        
+            }else{
+                window.location.href = '/{!Case.Id}';
+                window.open('/'+tufURL);
+            }
+            
+        }
+        //Sets the title of the current tab to "Case Transactions Detail"
+        function setTitle() {
+            window.location.href = '/{!Case.Id}';
+             //window.open('/'+tufURL);
+            
+            sforce.console.setTabTitle('{!Case.CaseNumber}');
+        } 
+        
+        function openInConsole(redirectUrl){
+        var consoleUrl = '';
+        var currentFocusedTabId = '';
+        var currentSubtabId = '';
+        sforce.console.generateConsoleUrl([redirectUrl], function(result) {
+        consoleUrl = result.consoleUrl.split('.com')[1];
+
+        if (typeof consoleUrl != 'undefined' && consoleUrl != '') {
+            
+          //check if current page is in subtab or primary tab 
+          sforce.console.getEnclosingPrimaryTabObjectId(function(rr) {
+            if (rr.id != "null") {
+                 
+              //current page is in subTab 
+              sforce.console.getFocusedPrimaryTabId(function(result) {
+                currentFocusedTabId = result.id;
+                 
+                sforce.console.getFocusedSubtabId(function(result) {
+                  var currentSubtabId = result.id;
+                   
+                  sforce.console.openSubtab(currentFocusedTabId, redirectUrl, true, '', currentSubtabId, function(rr) {}, null);
+                     
+                });
+              });
+            } else {
+                
+              //current page is in Primary tab 
+              sforce.console.getFocusedPrimaryTabId(function(result) {
+                sforce.console.disableTabClose(false, result.id);
+                sforce.console.openConsoleUrl(result.id, consoleUrl, true, ['', '', '', ''], ['', '', '', ''], function(rr) {
+                  sforce.console.closeTab(result.id, function(result) {});
+                });
+              });
+            }
+          });
+        }
+      });
+    }
+    </script>
+    
+</apex:page>

@@ -1,0 +1,100 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+  <head>
+<style>
+table
+{
+font-size:24px;
+color:#FFFFFF;
+font-style:italic;
+
+
+
+}
+
+body
+{
+background-image:url(https://c.ap2.visual.force.com/resource/1465725848000/background2);
+background-repeat:no-repeat;
+background-size:1000px 600px;
+
+
+}
+</style>
+</head>
+<body >
+<center><h1 style="color:#FFFFFF">Sign Up Here......!!!!</h1></center>
+<center>
+<table style="border:0">
+  <tr>
+    <td width="257"><b>Enter First Name:</b> </td>
+    <td width="325"><input type="text" name="name" style="width:200px;"/></td>
+    
+  </tr>
+  <tr>
+  <td width="257"><b>Enter Last Name:</b> </td>
+    <td width="325"><input type="text" name="lname" style="width:200px;"/></td>
+    </tr>
+  <tr>
+    <td><b>Enter Father Name:</b> </td>
+    <td><input type="text" name="fname" style="width:200px;"/></td>
+   </tr>
+  <tr>
+    <td><b>Enter Email:</b> </td>
+    <td><input type="email" name="email" style="width:200px;"/></td>
+    
+  </tr>
+  <tr>
+    <td><b>Enter date of birth:</b></td>
+    <td><input type="date" name="date" style="width:200px;"/></td>
+    
+  </tr>
+  <tr>
+  <td><b>Enter Phone Num: </b></td>
+    <td><input type="number" name="num" style="width:200px;"/></td></tr>
+  <tr>
+  
+  <td><b>Applying For:</b></td>
+  <td><select>
+  <option value="Intern">
+  Intern</option>
+  <option value="Manager">
+  Manager</option>
+  <option value="AssociateEngineer">
+  Associate Engineer</option>
+  </select></td>
+  </tr>
+  
+  <tr>
+    <td><b>Hobbies:</b></td>
+    <td>
+    <input type="checkbox" name="singing"/>singing
+    <input type="checkbox" name="dancing"/>dancing
+    <input type="checkbox" name="reading"/>reading 
+     </td>
+  </tr>
+  
+  <tr>
+    <td><b>Gender:</b></td>
+    <td><input type="radio" name="male"/>male
+    <input type="radio" name="female"/>female
+    <input type="radio" name="others"/>others</td>
+    
+  </tr>
+  
+ <tr>
+    <td><b>Enter password:</b> </td>
+    <td><input type="password" name="password" style="width:200px;"/></td>
+    
+  </tr>
+  <tr>
+  <td><b>Confirm password:</b></td>
+    <td><input type="password" name="repass" style="width:200px;"/></td></tr>
+    <tr>
+  <td colspan="2">
+ <center><input type="image" name="imageField" id="imageField" src="https://c.ap2.visual.force.com/resource/1465725640000/submit" class="send"  /></center>
+  </td>
+  </tr>
+</table>
+</center>
+</body>
+</apex:page>

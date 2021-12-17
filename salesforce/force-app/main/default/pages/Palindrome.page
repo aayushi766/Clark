@@ -1,0 +1,28 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  
+
+<script type="text/javascript">
+  function Palindrome() {
+   var revStr = "";
+   var str = document.getElementById("str").value;
+   var length = str.length;
+   for(var j=length; j>=0; j--) {
+      revStr = revStr+str.charAt(j);
+   }
+   if(str == revStr) {
+      alert("You got it right... "+str+" is Palindrome");
+   } else {
+      alert("Oops.."+str+" is not a Palindrome");
+   }
+}
+
+</script>
+
+<form >
+  Enter a String/Number: <input type="text" id="str" name="string" /><br />
+  <input type="submit" value="Check" onclick="Palindrome();"/>
+</form>
+
+
+</apex:page>

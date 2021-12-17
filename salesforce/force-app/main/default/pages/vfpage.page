@@ -1,0 +1,74 @@
+<apex:page controller="vfPageController">
+
+  <apex:form id="frm">      
+  
+  <apex:actionFunction action="{!showNotesFnctn}" name="showNotesFnctn" reRender="notes,notesDetail,err" status="status"/>
+   <apex:actionFunction action="{!showNotesDetail}" name="showNotesDetail" reRender="notesDetail,err" status="status"/>
+   <apex:actionFunction action="{!showOutputDetail}" name="showOutputDetail" reRender="notesDetail,err,notes" status="status"/>
+   <apex:actionFunction action="{!showInputDetail}" name="showInputDetail" reRender="notesDetail,err,notes" status="status"/>
+   <apex:actionStatus startText="Loading.............." id="status"/>
+  
+   <apex:pageMessages id="err"/>
+  
+   <apex:pageBlock >
+   <apex:pageBlockSection id="sec" title="User Details">
+   
+        <apex:outputField value="{!u.Name}"/>
+        <apex:outputField value="{!u.Email}"/>
+          <apex:outputField value="{!u.Phone}"/>
+         
+         </apex:pageBlockSection>
+         <apex:pageblockSection title="Account List" >
+         <apex:selectList value="{!accountId}" size="1"  onchange="showNotesFnctn();return false;">
+         <apex:selectOptions value="{!accountList}"  ></apex:selectOptions>
+         </apex:selectList>
+          </apex:pageBlockSection>
+           <apex:outputPanel id="notes">
+         <apex:pageBlockSection title="Notes List"  rendered="{!showNotes}">
+       
+        
+         
+         <apex:selectList value="{!notesId}" size="1"  onchange="showNotesDetail();return false;">
+         <apex:selectOptions value="{!NotesList}"  ></apex:selectOptions>
+         </apex:selectList>
+        
+         
+         </apex:pageBlockSection>
+          </apex:outputPanel>
+         
+         <br/>{!message}
+         <apex:outputPanel id="notesDetail">
+         <apex:pageBlockSection title="notes detail" rendered="{!if(showDetail||showOutput,true,false)}" >
+        
+         <apex:pageBlockTable value="{!obj}" var="obj1">
+         <apex:column rendered="{!showDetail}" headerValue="title" >{!obj1.title}
+         </apex:column>
+         <apex:column rendered="{!showOutput}" headerValue="title" ><apex:InputField value="{!obj1.title}"/>
+         </apex:column>
+         <apex:column rendered="{!showDetail}" headerValue="body">{!obj1.body}
+         </apex:column>
+         <apex:column rendered="{!showOutput}" headerValue="body"><apex:InputField value="{!obj1.body}"/>
+         </apex:column>
+         <apex:column rendered="{!showDetail}" headerValue="privacy">{!obj1.isPrivate}
+         </apex:column>
+         <apex:column rendered="{!showOutput}" headerValue="privacy"><apex:InputField value="{!obj1.isPrivate}"/>
+         </apex:column>
+        
+         <apex:column rendered="{!showDetail}"><apex:commandButton value="edit" rendered="{!(obj.isPrivate!=true)}" onclick="showOutputDetail();return false;"/></apex:column>
+         <apex:column rendered="{!showOutput}"><apex:commandButton value="save" onclick="showInputDetail();return false;"/></apex:column>
+        
+         </apex:pageBlockTable>
+         
+        
+         
+        
+         </apex:pageBlockSection>
+         </apex:outputPanel>
+        
+           
+        
+          
+         
+         </apex:pageBlock>
+    </apex:form>
+</apex:page>

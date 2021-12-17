@@ -1,0 +1,18 @@
+<apex:page standardController="Account" extensions="DemoVF4AController" action="{!greeting}">
+<apex:form >
+<table>
+<tr>
+<td>Account Name: </td>
+<td><apex:inputField value="{!Account.name}"/> </td>
+</tr>
+<tr>
+<td>Phone Number:</td>
+<td><Apex:inputField value="{!Account.phone}" required="true"/></td>
+</tr>
+    <tr><td><Apex:commandButton value="save" action="{!save}"/></td><td><Apex:commandButton value="cancelMe" action="{!cancelMe}"/></td></tr>
+</table>
+
+</apex:form>
+
+
+</apex:page>
