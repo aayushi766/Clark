@@ -12,16 +12,27 @@
 
         <template if:false={noConfigRecords}>
             <lightning-layout multiple-rows="true">
-                <lightning-layout-item size="6">
+                <lightning-layout-item size="9">
                     <div style="padding-left:5px">
-                        <lightning-input type="text" placeholder="Search Config here..." class="slds-float_left"></lightning-input>
-                   
+                        <lightning-input type="text" placeholder="Search Config here..." class="slds-float_left" onchange={onChangeSearchText}></lightning-input>
                         
+                    </div>
+                    <div style="padding-top:20px;padding-right:5px">
+                        <lightning-button
+                        variant="brand"
+                        title="Search"
+                        label="Search"
+                        icon-name="utility:search"
+                        icon-position="right"
+                        onclick={searchConfigs}
+                        ></lightning-button>
                     </div>
                     
                 </lightning-layout-item>
-                <lightning-layout-item size="6">
-                    <div style="padding-top:20px;padding-right:5px">
+                <lightning-layout-item size="3">
+                   
+                    <div style="padding-top:20px;padding-right:5px;padding-left:5px">
+                       
                         <lightning-button
                     variant="brand"
                     title="Save"

@@ -189,4 +189,12 @@ export default class TablePaginationLwc extends LightningElement {
             this.isLoading = false;
         })
     }
+
+    @api
+    refreshComp(recordsParam){
+        this.records = recordsParam;
+        this.isLoading = true;
+        this.setRecordsToDisplay();
+        return refreshApex(this.recordsToDisplay);
+    }
 }
