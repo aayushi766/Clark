@@ -1,7 +1,7 @@
 import { LightningElement,track } from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
-import getAvailableConfigRecords from '@salesforce/apex/AvailableConfigsController.getAvailableConfigRecords';
+import getAvailableConfigRecords from '@salesforce/apex/ConfigManagementController.getAvailableConfigRecords';
 const columns = [
     { label: 'Label', fieldName: 'Label',sortable:true },
     { label: 'Type', fieldName: 'Type' },

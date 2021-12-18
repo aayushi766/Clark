@@ -1,4 +1,5 @@
-public with sharing class AvailableConfigsController {
+
+public with sharing class ConfigManagementController {
     @AuraEnabled
     public static List<Config__c> getAvailableConfigRecords(){
         try {
