@@ -28,7 +28,8 @@
         <members>*</members>
         <name>LightningComponentBundle</name>
     </types>
-    <types>
+    
+    <types> 
         <members>Config__c</members>
          <members>Available_Config__c</members>
         <name>CustomObject</name>
