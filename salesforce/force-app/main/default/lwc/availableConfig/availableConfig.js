@@ -1,7 +1,10 @@
-import { LightningElement,track } from 'lwc';
+import { LightningElement,track,api } from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
+import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import getAvailableConfigRecords from '@salesforce/apex/ConfigManagementController.getAvailableConfigRecords';
+import saveConfigRecords from '@salesforce/apex/ConfigManagementController.saveConfigRecords';
+
 const columns = [
     { label: 'Label', fieldName: 'Label',sortable:true },
     { label: 'Type', fieldName: 'Type' },
@@ -15,10 +18,16 @@ export default class AvailableConfig extends LightningElement {
     searchText;
     configDataBackup;
     result;
+    saveEvent = false;
+    @api recordId;
     
     connectedCallback(){
+        console.log('recordId===',this.recordId);
+        this.refreshPage();
         
-        getAvailableConfigRecords().then(response => {
+    }
+    refreshPage(){
+        getAvailableConfigRecords({'caseId':this.recordId}).then(response => {
             console.log('response===',response);
             if(response.length > 0){
               
@@ -32,14 +41,21 @@ export default class AvailableConfig extends LightningElement {
                 console.log('this.configData----',this.configData);
                 this.noConfigRecords = false; 
                 this.configDataBackup = this.configData;
+                this.configData = [...this.configData];
+                if(this.saveEvent){
+                    this.template.querySelector('c-table-pagination-lwc').refreshComp(this.configData);
+                }
+                
+            
                 
             }
+            
             this.showSpinner = false;
+            //return refreshApex(this.configData);
             
         }).catch(error => {
 
         });
-        
     }
     onChangeSearchText(event){
         this.searchText = event.detail.value;
@@ -79,6 +95,23 @@ export default class AvailableConfig extends LightningElement {
             this.showToast('Error','Please select config from available config records', 'error');
         }else{
             console.log('selectedRows-===',selectedRows);
+            selectedRows = [...selectedRows];
+            const match =  this.configDataBackup.filter(s => selectedRows.includes(s.id));
+            console.log('match for savingf',match);
+            this.showSpinner = true;
+            saveConfigRecords({payload : JSON.stringify(match), caseId:this.recordId}).then(response =>{
+                this.saveEvent = true;
+                // Notify LDS that you've changed the record outside its mechanisms.
+                getRecordNotifyChange([{recordId: this.recordId}])
+                this.showToast('Success','Case Configs created successfully', 'success');
+                return refreshApex(this.refreshPage());
+                
+            }).catch(error=>{
+                this.showToast('Error',error.description.message, 'error');
+                this.showSpinner = false;
+            })
+            
+                
         }
     }
 
