@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Available Configs">
+        <template if:true={showSpinner}>
+            <lightning-spinner ></lightning-spinner>
+        </template>
+        <div class="slds-border_top"></div>
+        <template if:true={noConfigRecords}>
+            <div style="padding:10px;font-weight:bold;">
+                <p>No Config Records found</p>
+            </div>
+        </template>
+
+        <template if:false={noConfigRecords}>
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="6">
+                    <div style="padding-left:5px">
+                        <lightning-input type="text" placeholder="Search Config here..." class="slds-float_left"></lightning-input>
+                   
+                        
+                    </div>
+                    
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                    <div style="padding-top:20px;padding-right:5px">
+                        <lightning-button
+                    variant="brand"
+                    title="Save"
+                    class="slds-float_right"
+                    label="Save"
+                    icon-name="utility:save"
+                    icon-position="right"
+                    onclick={handleClick}
+                    ></lightning-button>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <div>
+                        <c-table-pagination-lwc records={configData}
+                        show-table="true"
+                        columns={columns}
+                        recordsperpage="8"
+                        onactions={handleRowActions}
+                        onpagination={handlePagination}
+                        >
+                        </c-table-pagination-lwc>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+           
+       </template>
+       
+    </lightning-card>
+</template>
