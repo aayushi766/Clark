@@ -73,5 +73,13 @@ export default class AvailableConfig extends LightningElement {
         });
         this.dispatchEvent(toastEvent);
     }
+    saveConfigs(){
+        var selectedRows = this.template.querySelector('c-table-pagination-lwc').getSelectedRows();
+        if(selectedRows.length == 0){
+            this.showToast('Error','Please select config from available config records', 'error');
+        }else{
+            console.log('selectedRows-===',selectedRows);
+        }
+    }
 
 }

@@ -15,7 +15,7 @@ export default class TablePaginationLwc extends LightningElement {
 
     @track draftValues = [];
     @track recordsToDisplay;
-
+    @track preSelectedRows = [];
     totalRecords;
     pageNo;
     totalPages;
@@ -27,7 +27,7 @@ export default class TablePaginationLwc extends LightningElement {
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
     ortedBy;
-
+    preSelectedRowsBackup = [];
     connectedCallback() {
         this.isLoading = true;
         this.setRecordsToDisplay();
@@ -96,7 +96,9 @@ export default class TablePaginationLwc extends LightningElement {
         this.delayTimeout = setTimeout(() => {
             this.disableEnableActions();
         }, DELAY);
+        this.preSelectedRows = [...this.preSelectedRowsBackup];
         this.isLoading = false;
+        
     }
 
     disableEnableActions() {
@@ -130,11 +132,13 @@ export default class TablePaginationLwc extends LightningElement {
                 data : row
             }
         });
+        console.log('rowAction====',rowAction);
         this.dispatchEvent(rowAction);
     }
 
     handlePage(button) {
         this.pageNo = button.target.label;
+        
         this.preparePaginationList();
     }
 
@@ -196,5 +200,61 @@ export default class TablePaginationLwc extends LightningElement {
         this.isLoading = true;
         this.setRecordsToDisplay();
         return refreshApex(this.recordsToDisplay);
+    }
+    @api
+    getSelectedRows() {
+
+        /*var selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();  
+        console.log('selectedRecords are ',selectedRecords);
+        var temp=[];
+        selectedRecords.forEach(row=>{
+            temp.push(row);
+        })
+        this.preSelectedRows = [...temp];*/
+        return this.preSelectedRows;
+
+    }
+    rowSelectionEvent(evt){
+        // List of selected items from the data table event.
+        let updatedItemsSet = new Set();
+        // List of selected items we maintain.
+        let selectedItemsSet = new Set(this.preSelectedRows);
+        // List of items currently loaded for the current view.
+        let loadedItemsSet = new Set();
+
+
+        this.recordsToDisplay.forEach((event) => {
+            loadedItemsSet.add(event.id);
+        });
+        console.log('loadedItemsSet---',loadedItemsSet)
+
+        if (evt.detail.selectedRows) {
+            console.log('evt.detail.selectedRows---',evt.detail.selectedRows)
+
+            evt.detail.selectedRows.forEach((event) => {
+                updatedItemsSet.add(event.id);
+            });
+            console.log('updatedItemsSet---',updatedItemsSet)
+
+            // Add any new items to the selection list
+            updatedItemsSet.forEach((id) => {
+                if (!selectedItemsSet.has(id)) {
+                    selectedItemsSet.add(id);
+                }
+            });     
+               
+        }
+        loadedItemsSet.forEach((id) => {
+            if (selectedItemsSet.has(id) && !updatedItemsSet.has(id)) {
+                // Remove any items that were unselected.
+                selectedItemsSet.delete(id);
+            }
+        });
+
+
+        this.preSelectedRows = [...selectedItemsSet];
+        this.preSelectedRowsBackup = this.preSelectedRows;
+        console.log('---selection---'+JSON.stringify(this.preSelectedRows));
+        return refreshApex(this.preSelectedRows );
     }
 }

@@ -8,7 +8,7 @@
         <div class="slds-m-aroung_small">
         <template if:true={showTable}>
             <lightning-datatable
-                key-field="Id"
+                key-field="id"
                 data={recordsToDisplay}
                 show-row-number-column="false"
                 show-checkbox-column
@@ -20,6 +20,8 @@
                 onsort={onHandleSort}
                 onsave={handleSave}
                 draft-values={draftValues} 
+                selected-rows={preSelectedRows}
+                onrowselection={rowSelectionEvent}
             >
             </lightning-datatable>
         </template>
@@ -29,10 +31,10 @@
     class="slds-m-aroung_small slds-align_absolute-center"
     style="color: firebrick;"
     >
-    Displaying Page No:
+    Page No:
     <strong>&nbsp;{pageNo}/{totalPages}&nbsp;</strong>and displaying records
     <template if:true={end}>
-        from {endRecord}/{totalRecords}
+         from {endRecord}/{totalRecords}
     </template>
     <template if:false={end}>
         from ({startRecord}-{endRecord})/{totalRecords}
