@@ -18,7 +18,7 @@ public with sharing class ConfigManagementController {
                 ignoreLabels.add(availableConfig.Label__c);
             }
             List<Config__c> configRecords = [SELECT ID,Label__c,Type__c,Amount__c
-                                            FROM Config__c WHERE Label__c NOT IN : ignoreLabels]; //added label filter to show only records which case doesn't own.
+                                            FROM Config__c WHERE Label__c NOT IN : ignoreLabels LIMIT 50000]; //added label filter to show only records which case doesn't own.
             CaseWrapper responseWrap = new CaseWrapper();
             responseWrap.caseId = caseId;
             responseWrap.status = caseRecord[0].status;
@@ -111,12 +111,8 @@ public with sharing class ConfigManagementController {
             req.setBody(payload);
             Http http = new Http();
             HTTPResponse res = http.send(req);
-            if(res.getStatusCode() == 200){
-                return true;
-            }else{
-                return false;
-            }
-            
+            boolean isError = res.getStatusCode() == 200 ?  true :  false;
+            return isError;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
