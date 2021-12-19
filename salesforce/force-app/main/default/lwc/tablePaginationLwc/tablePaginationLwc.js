@@ -1,6 +1,5 @@
 
 import { LightningElement, api, track } from "lwc";
-import { updateRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -12,7 +11,6 @@ export default class TablePaginationLwc extends LightningElement {
     @api records;
     @api recordsperpage;
     @api columns;
-
     @track draftValues = [];
     @track recordsToDisplay;
     @track preSelectedRows = [];
@@ -37,7 +35,6 @@ export default class TablePaginationLwc extends LightningElement {
         this.pageNo = 1;
         this.totalPages = Math.ceil(this.totalRecords / this.recordsperpage);
         this.preparePaginationList();
-
         for (let i = 1; i <= this.totalPages; i++) {
             this.pagelinks.push(i);
         }
@@ -80,37 +77,31 @@ export default class TablePaginationLwc extends LightningElement {
         let begin = (this.pageNo - 1) * parseInt(this.recordsperpage);
         let end = parseInt(begin) + parseInt(this.recordsperpage);
         this.recordsToDisplay = this.records.slice(begin, end);
-
         this.startRecord = begin + parseInt(1);
         this.endRecord = end > this.totalRecords ? this.totalRecords : end;
         this.end = end > this.totalRecords ? true : false;
-
         const event = new CustomEvent('pagination', {
             detail: { 
                 records : this.recordsToDisplay
             }
         });
         this.dispatchEvent(event);
-
         window.clearTimeout(this.delayTimeout);
         this.delayTimeout = setTimeout(() => {
             this.disableEnableActions();
         }, DELAY);
         this.preSelectedRows = [...this.preSelectedRowsBackup];
         this.isLoading = false;
-        
     }
 
     disableEnableActions() {
         let buttons = this.template.querySelectorAll("lightning-button");
-
         buttons.forEach(bun => {
             if (bun.label === this.pageNo) {
                 bun.disabled = true;
             } else {
                 bun.disabled = false;
             }
-
             if (bun.label === "First") {
                 bun.disabled = this.pageNo === 1 ? true : false;
             } else if (bun.label === "Previous") {
@@ -138,7 +129,6 @@ export default class TablePaginationLwc extends LightningElement {
 
     handlePage(button) {
         this.pageNo = button.target.label;
-        
         this.preparePaginationList();
     }
 
@@ -151,7 +141,6 @@ export default class TablePaginationLwc extends LightningElement {
         this.sortedBy = sortedBy;
     }
     sortBy( field, reverse, primer ) {
-
         const key = primer
         ? function( x ) {
             return primer(x[field]);
@@ -159,39 +148,11 @@ export default class TablePaginationLwc extends LightningElement {
         : function( x ) {
             return x[field];
         };
-
         return function( a, b ) {
             a = key(a);
             b = key(b);
             return reverse * ( ( a > b ) - ( b > a ) );
         };
-    }
-
-    handleSave(event) {
-        this.isLoading = true;
-        const recordInputs =  event.detail.draftValues.slice().map(draft => {
-            const fields = Object.assign({}, draft);
-            return { fields };
-        });
-        const promises = recordInputs.map(recordInput => updateRecord(recordInput));
-        window.console.log(' Updating Records.... ');
-        Promise.all(promises).then(record => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'All Records updated',
-                    variant: 'success'
-                })
-            );
-            this.draftValues = [];
-            eval("$A.get('e.force:refreshView').fire();");
-            return refreshApex(this.recordsToDisplay);
-        }).catch(error => {
-            window.console.error(' error **** \n '+error);
-        })
-        .finally(()=>{
-            this.isLoading = false;
-        })
     }
 
     @api
@@ -203,16 +164,7 @@ export default class TablePaginationLwc extends LightningElement {
     }
     @api
     getSelectedRows() {
-
-        /*var selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();  
-        console.log('selectedRecords are ',selectedRecords);
-        var temp=[];
-        selectedRecords.forEach(row=>{
-            temp.push(row);
-        })
-        this.preSelectedRows = [...temp];*/
         return this.preSelectedRows;
-
     }
     rowSelectionEvent(evt){
         // List of selected items from the data table event.
@@ -221,28 +173,19 @@ export default class TablePaginationLwc extends LightningElement {
         let selectedItemsSet = new Set(this.preSelectedRows);
         // List of items currently loaded for the current view.
         let loadedItemsSet = new Set();
-
-
         this.recordsToDisplay.forEach((event) => {
             loadedItemsSet.add(event.id);
         });
-        console.log('loadedItemsSet---',loadedItemsSet)
-
         if (evt.detail.selectedRows) {
-            console.log('evt.detail.selectedRows---',evt.detail.selectedRows)
-
             evt.detail.selectedRows.forEach((event) => {
                 updatedItemsSet.add(event.id);
             });
-            console.log('updatedItemsSet---',updatedItemsSet)
-
             // Add any new items to the selection list
             updatedItemsSet.forEach((id) => {
                 if (!selectedItemsSet.has(id)) {
                     selectedItemsSet.add(id);
                 }
-            });     
-               
+            });        
         }
         loadedItemsSet.forEach((id) => {
             if (selectedItemsSet.has(id) && !updatedItemsSet.has(id)) {
@@ -250,11 +193,8 @@ export default class TablePaginationLwc extends LightningElement {
                 selectedItemsSet.delete(id);
             }
         });
-
-
         this.preSelectedRows = [...selectedItemsSet];
         this.preSelectedRowsBackup = this.preSelectedRows;
-        console.log('---selection---'+JSON.stringify(this.preSelectedRows));
         return refreshApex(this.preSelectedRows );
     }
 }

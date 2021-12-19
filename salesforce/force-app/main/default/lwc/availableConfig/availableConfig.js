@@ -11,76 +11,68 @@ const columns = [
     { label: 'Amount', fieldName: 'Amount' },
 ];
 export default class AvailableConfig extends LightningElement {
-    @track configData = [];
+    @track configData = []; // variable to hold configs
     columns = columns;
     showSpinner = true;
     noConfigRecords = true;
     searchText;
-    configDataBackup;
+    configDataBackup; //variable to hold config record in backup
     result;
     saveEvent = false;
     @api recordId;
-    
+    //this method will be called on component load
     connectedCallback(){
-        console.log('recordId===',this.recordId);
-        this.refreshPage();
-        
+        this.refreshPage(); //load the data
     }
+    //a multi purpose method to refresh component
     refreshPage(){
+        //apex call to get available config records.
         getAvailableConfigRecords({'caseId':this.recordId}).then(response => {
-            console.log('response===',response);
             if(response.length > 0){
-              
                 this.configData = [];
                 response.forEach(config => {
                     this.configData.push({'Label' : config.Label__c,
-                                    'Type' : config.Type__c, 
-                                    'Amount' : config.Amount__c,
-                                   'id':config.Id})
+                                        'Type' : config.Type__c, 
+                                        'Amount' : config.Amount__c,
+                                        'id':config.Id})
                 })
-                console.log('this.configData----',this.configData);
                 this.noConfigRecords = false; 
                 this.configDataBackup = this.configData;
                 this.configData = [...this.configData];
-                if(this.saveEvent){
+                if(this.saveEvent){ //once data saved refresh child component
+                    this.saveEvent = false;
                     this.template.querySelector('c-table-pagination-lwc').refreshComp(this.configData);
-                }
-                
-            
-                
+                }  
             }
-            
             this.showSpinner = false;
-            //return refreshApex(this.configData);
-            
         }).catch(error => {
-
+            this.showToast('Error',error.description.message, 'error');
         });
     }
+    //to load search text field on input change
     onChangeSearchText(event){
         this.searchText = event.detail.value;
     }
+    //search config records with search text where search text should be of minimum 2 length
     searchConfigs(){
-        console.log('this.searchText---',this.searchText);
-        if(!this.searchText){
+        if(!this.searchText){ //a case to show all records back.. when search text is blank
             this.configData  = this.configDataBackup;
             this.template.querySelector('c-table-pagination-lwc').refreshComp(this.configData);
             return refreshApex(this.configData);
         }
-        else if(this.searchText.length < 2){
+        else if(this.searchText.length < 2){ //show error when search text has length < 2
             this.showToast('Error','Search text should be of minimum 2 character', 'error');
         }else{
             // find all strings in array containing 'search text'
             const match =  this.configDataBackup.filter(s => s.Label.includes(this.searchText));
             this.configData = match;
             this.configData = [...this.configData];
-            console.log('here',match);
-            console.log('here size',match.length);
             this.searchText = undefined;
             this.template.querySelector('c-table-pagination-lwc').refreshComp(this.configData);
             return refreshApex(this.configData);
         }
     }
+    //a generic method to show toast of success/info/error
     showToast(title,message,variant){
         const toastEvent = new ShowToastEvent({
             title: title,
@@ -89,15 +81,14 @@ export default class AvailableConfig extends LightningElement {
         });
         this.dispatchEvent(toastEvent);
     }
+    //save config records to database on click of save method
     saveConfigs(){
         var selectedRows = this.template.querySelector('c-table-pagination-lwc').getSelectedRows();
         if(selectedRows.length == 0){
             this.showToast('Error','Please select config from available config records', 'error');
         }else{
-            console.log('selectedRows-===',selectedRows);
             selectedRows = [...selectedRows];
             const match =  this.configDataBackup.filter(s => selectedRows.includes(s.id));
-            console.log('match for savingf',match);
             this.showSpinner = true;
             saveConfigRecords({payload : JSON.stringify(match), caseId:this.recordId}).then(response =>{
                 this.saveEvent = true;
@@ -109,10 +100,8 @@ export default class AvailableConfig extends LightningElement {
             }).catch(error=>{
                 this.showToast('Error',error.description.message, 'error');
                 this.showSpinner = false;
-            })
-            
-                
+            })      
         }
-    }
+    }//end of saveConfigs method
 
-}
+}//end of lwc component

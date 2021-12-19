@@ -5,7 +5,7 @@
         </template>
         <div class="slds-border_top"></div>
         <template if:true={noConfigRecords}>
-            <div style="padding:10px;font-weight:bold;">
+            <div style="padding:10px;font-weight:bold;" class="slds-align_absolute-center">
                 <p>No Config Records found</p>
             </div>
         </template>
@@ -14,8 +14,7 @@
             <lightning-layout multiple-rows="true">
                 <lightning-layout-item size="9">
                     <div style="padding-left:5px">
-                        <lightning-input type="text" placeholder="Search Config here..." class="slds-float_left" onchange={onChangeSearchText}></lightning-input>
-                        
+                        <lightning-input type="text" placeholder="Search Config here..." class="slds-float_left" onchange={onChangeSearchText}></lightning-input>                      
                     </div>
                     <div style="padding-top:20px;padding-right:5px">
                         <lightning-button
@@ -26,26 +25,24 @@
                         icon-position="right"
                         onclick={searchConfigs}
                         ></lightning-button>
-                    </div>
-                    
+                    </div> 
                 </lightning-layout-item>
                 <lightning-layout-item size="3">
-                   
                     <div style="padding-top:20px;padding-right:5px;padding-left:5px">
-                       
-                        <lightning-button
-                    variant="brand"
-                    title="Save"
-                    class="slds-float_right"
-                    label="Save"
-                    icon-name="utility:save"
-                    icon-position="right"
-                    onclick={saveConfigs}
-                    ></lightning-button>
+                       <lightning-button
+                        variant="brand"
+                        title="Save"
+                        class="slds-float_right"
+                        label="Save"
+                        icon-name="utility:save"
+                        icon-position="right"
+                        onclick={saveConfigs}
+                        ></lightning-button>
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item size="12">
                     <div>
+                        <!--Config data with Pagination-->
                         <c-table-pagination-lwc records={configData}
                         show-table="true"
                         columns={columns}
@@ -57,8 +54,6 @@
                     </div>
                 </lightning-layout-item>
             </lightning-layout>
-           
        </template>
-       
     </lightning-card>
 </template>

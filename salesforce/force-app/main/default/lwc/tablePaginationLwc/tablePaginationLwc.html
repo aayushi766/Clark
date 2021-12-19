@@ -1,9 +1,7 @@
 <template>
     <div class="slds-m-aroung_small slds-align_absolute-center">
         <lightning-spinner if:true={isLoading} alternative-text="Loading" size="small"></lightning-spinner>
-        
     </div>
-    
     <div class="slds-m-top_small"></div>
         <div class="slds-m-aroung_small">
         <template if:true={showTable}>
@@ -16,9 +14,8 @@
                 onrowaction={handleRowAction}
                 default-sort-direction={defaultSortDirection}
                 sorted-direction={sortDirection}
-                sorted-by={sortedBy}
+                sorted-by={sortedBy} 
                 onsort={onHandleSort}
-                onsave={handleSave}
                 draft-values={draftValues} 
                 selected-rows={preSelectedRows}
                 onrowselection={rowSelectionEvent}
@@ -52,7 +49,7 @@
         icon-position="left"
         onclick={handleClick}
         ></lightning-button>
-    &nbsp;
+        &nbsp;
         <lightning-button
         variant="neutral"
         title="previous"
@@ -62,19 +59,15 @@
         icon-position="left"
         onclick={handleClick}
         ></lightning-button>
-       
-    <template if:true={pagelinks}>
-        &nbsp;
-        <lightning-button-menu alternative-text="Page Link" label="Page Link">
-            <template for:each={pagelinks} for:item="page">
-                <lightning-menu-item value={page} label={page}  onclick={handlePage} key={page}></lightning-menu-item>
-            
-            </template>
-            
-        </lightning-button-menu>
-        &nbsp;
-    </template>
-    
+        <template if:true={pagelinks}>
+            &nbsp;
+            <lightning-button-menu alternative-text="Page Link" label="Page Link">
+                <template for:each={pagelinks} for:item="page">
+                    <lightning-menu-item value={page} label={page}  onclick={handlePage} key={page}></lightning-menu-item>
+                </template>
+            </lightning-button-menu>
+            &nbsp;
+        </template>
         <lightning-button
         variant="neutral"
         title="next"
