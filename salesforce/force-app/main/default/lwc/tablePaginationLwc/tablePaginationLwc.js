@@ -26,6 +26,7 @@ export default class TablePaginationLwc extends LightningElement {
     sortDirection = 'asc';
     ortedBy;
     preSelectedRowsBackup = [];
+    @api showCheckboxColumnParam = false;
     connectedCallback() {
         this.isLoading = true;
         this.setRecordsToDisplay();
