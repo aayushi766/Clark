@@ -5,18 +5,21 @@ import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import getAvailableConfigRecords from '@salesforce/apex/ConfigManagementController.getAvailableConfigRecords';
 import saveConfigRecords from '@salesforce/apex/ConfigManagementController.saveConfigRecords';
 // Import message service features required for publishing and the message channel
-import { publish, MessageContext } from 'lightning/messageService';
-import CONFIG_SAVED from '@salesforce/messageChannel/Config_Saved__c';
+import { publish, MessageContext,subscribe,
+    unsubscribe,
+    APPLICATION_SCOPE } from 'lightning/messageService';
+import CONFIG_SAVED from '@salesforce/messageChannel/Config_saved__c';
 const columns = [
     { label: 'Label', fieldName: 'Label',sortable:true },
-    { label: 'Type', fieldName: 'Type' },
-    { label: 'Amount', fieldName: 'Amount' }, 
+    { label: 'Type', fieldName: 'Type',sortable:true },
+    { label: 'Amount', fieldName: 'Amount',sortable:true }, 
 ];
 export default class AvailableConfig extends LightningElement {
     @track configData = []; // variable to hold configs
     columns = columns;
     showSpinner = true;
     noConfigRecords = true;
+    subscription;
     searchText;
     configDataBackup; //variable to hold config record in backup
     result;
@@ -24,11 +27,28 @@ export default class AvailableConfig extends LightningElement {
     disableAddButton = false;
     @api recordId;
     @wire(MessageContext)
-    showcheckboxcolumn = true;
     messageContext;
+    showcheckboxcolumn = true;
+    
+    // Encapsulate logic for Lightning message service subscribe and unsubsubscribe
+    subscribeToMessageChannel() {
 
+        this.subscription = subscribe(
+        this.messageContext,
+        CONFIG_SAVED,
+        (message) => this.disableAddButton = true
+        
+        );
+        
+    } 
+
+    unsubscribeToMessageChannel() {
+        unsubscribe(this.subscription);
+        this.subscription = null;
+    }
     //this method will be called on component load
     connectedCallback(){
+        this.subscribeToMessageChannel();
         this.refreshPage(); //load the data
     }
     //a multi purpose method to refresh component

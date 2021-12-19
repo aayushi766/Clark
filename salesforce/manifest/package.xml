@@ -34,6 +34,10 @@
          <members>Available_Config__c</members>
         <name>CustomObject</name>
     </types>
+    <types>
+        <members>Case_Record_Page2</members>
+        <name>FlexiPage</name>
+    </types>
     
     <version>52.0</version>
 </Package>

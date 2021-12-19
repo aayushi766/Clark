@@ -1,11 +1,13 @@
 import { LightningElement,api,wire } from 'lwc';
 import getCaseConfigRecords from '@salesforce/apex/ConfigManagementController.getCaseConfigRecords';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
-import CONFIG_SAVED from '@salesforce/messageChannel/Config_Saved__c';
+import CONFIG_SAVED from '@salesforce/messageChannel/Config_saved__c';
+import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import updateCaseRecord from '@salesforce/apex/ConfigManagementController.updateCaseRecord'
 import sendCaseConfigDetailToExternalService from '@salesforce/apex/ConfigManagementController.sendCaseConfigDetailToExternalService'
 // Import message service features required for subscribing and the message channel
 import {
+    publish,
     subscribe,
     unsubscribe,
     APPLICATION_SCOPE,
@@ -14,8 +16,8 @@ import {
 
 const columns = [
     { label: 'Label', fieldName: 'Label',sortable:true },
-    { label: 'Type', fieldName: 'Type' },
-    { label: 'Amount', fieldName: 'Amount' }, 
+    { label: 'Type', fieldName: 'Type' ,sortable:true},
+    { label: 'Amount', fieldName: 'Amount',sortable:true }, 
 ];
 export default class CaseConfigs extends LightningElement { 
     caseConfigRecords = [];
@@ -96,6 +98,9 @@ export default class CaseConfigs extends LightningElement {
             sendCaseConfigDetailToExternalService({payload :  JSON.stringify(this.initialResponse)}).then(response =>{
                 this.showSpinner = false;    
                 if(response == true){
+                    // Notify LDS that you've changed the record outside its mechanisms.
+                    getRecordNotifyChange([{recordId: this.recordId}])
+                    publish(this.messageContext,CONFIG_SAVED,null);
                     this.showToast('Success','Case closed and sent successfully', 'success');
                 }else{
                     this.showToast('Error','Some issue occured while closing case, please retry again', 'error');
