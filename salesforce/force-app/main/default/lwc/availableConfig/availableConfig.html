@@ -31,9 +31,9 @@
                     <div style="padding-top:20px;padding-right:5px;padding-left:5px">
                        <lightning-button
                         variant="brand"
-                        title="Save"
+                        title="Add"
                         class="slds-float_right"
-                        label="Save"
+                        label="Add"
                         icon-name="utility:save"
                         icon-position="right"
                         onclick={saveConfigs}
@@ -42,11 +42,12 @@
                 </lightning-layout-item>
                 <lightning-layout-item size="12">
                     <div>
-                        <!--Config data with Pagination-->
+                        <!--Config data with-->
                         <c-table-pagination-lwc records={configData}
                         show-table="true"
                         columns={columns}
                         recordsperpage="8"
+                        show-checkbox-column-param = true
                         onactions={handleRowActions}
                         onpagination={handlePagination}
                         >

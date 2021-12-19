@@ -74,7 +74,7 @@ export default class AvailableConfig extends LightningElement {
     }
     //a generic method to show toast of success/info/error
     showToast(title,message,variant){
-        const toastEvent = new ShowToastEvent({
+        const toastEvent = new ShowToastEvent({ 
             title: title,
             message : message,
             variant:variant

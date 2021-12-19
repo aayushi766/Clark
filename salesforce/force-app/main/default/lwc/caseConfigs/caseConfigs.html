@@ -1,3 +1,22 @@
 <template>
-    
+    <lightning-card title="Case Configs">
+        <template if:true={showSpinner}>
+            <lightning-spinner ></lightning-spinner>
+        </template>
+        <template if:true={noConfigRecords}>
+            <div class="slds-align_absolute-center">
+                <p>No Case Config records available</p>
+            </div>
+        </template>
+        <template if:false={noConfigRecords}>
+        
+            <!--Config data with-->
+            <c-table-pagination-lwc records={caseConfigRecords}
+            show-table="true"
+            columns={columns}
+            recordsperpage="10"
+            >
+            </c-table-pagination-lwc>
+        </template> 
+    </lightning-card>
 </template>
