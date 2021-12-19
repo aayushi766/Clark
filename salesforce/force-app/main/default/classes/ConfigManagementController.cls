@@ -56,7 +56,8 @@ public with sharing class ConfigManagementController {
     public static List<Available_Config__c> getCaseConfigRecords(String caseId){
 
         try {
-            List<Available_Config__c> availableConfigList = [SELECT ID, Label__c,Amount__c,Type__c FROM Available_Config__c WHERE case__c =: caseId];
+            List<Available_Config__c> availableConfigList = [SELECT ID, Label__c,Amount__c,Type__c FROM Available_Config__c 
+                                                            WHERE case__c =: caseId order by createdDate desc];
             return availableConfigList;                                
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
