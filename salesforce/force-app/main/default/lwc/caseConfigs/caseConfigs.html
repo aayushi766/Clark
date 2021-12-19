@@ -3,13 +3,30 @@
         <template if:true={showSpinner}>
             <lightning-spinner ></lightning-spinner>
         </template>
+        <div class="slds-border_top"></div>
         <template if:true={noConfigRecords}>
             <div class="slds-align_absolute-center">
                 <p>No Case Config records available</p>
             </div>
         </template>
         <template if:false={noConfigRecords}>
-        
+            <div style="padding:5px">
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="12">
+                       <lightning-button
+                            variant="brand"
+                            title="Send"
+                            label="Send"
+                            icon-name="utility:send" 
+                            
+                            icon-position="right"
+                            onclick={searchConfigs}
+                        ></lightning-button>
+                        
+                    </lightning-layout-item>
+                </lightning-layout>    
+            </div>
+            
             <!--Config data with-->
             <c-table-pagination-lwc records={caseConfigRecords}
             show-table="true"

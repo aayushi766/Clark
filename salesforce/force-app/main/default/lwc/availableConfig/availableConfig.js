@@ -1,14 +1,16 @@
-import { LightningElement,track,api } from 'lwc';
+import { LightningElement,track,api,wire } from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import getAvailableConfigRecords from '@salesforce/apex/ConfigManagementController.getAvailableConfigRecords';
 import saveConfigRecords from '@salesforce/apex/ConfigManagementController.saveConfigRecords';
-
+// Import message service features required for publishing and the message channel
+import { publish, MessageContext } from 'lightning/messageService';
+import CONFIG_SAVED from '@salesforce/messageChannel/Config_Saved__c';
 const columns = [
     { label: 'Label', fieldName: 'Label',sortable:true },
     { label: 'Type', fieldName: 'Type' },
-    { label: 'Amount', fieldName: 'Amount' },
+    { label: 'Amount', fieldName: 'Amount' }, 
 ];
 export default class AvailableConfig extends LightningElement {
     @track configData = []; // variable to hold configs
@@ -20,6 +22,9 @@ export default class AvailableConfig extends LightningElement {
     result;
     saveEvent = false;
     @api recordId;
+    @wire(MessageContext)
+    messageContext;
+
     //this method will be called on component load
     connectedCallback(){
         this.refreshPage(); //load the data
@@ -87,7 +92,7 @@ export default class AvailableConfig extends LightningElement {
         if(selectedRows.length == 0){
             this.showToast('Error','Please select config from available config records', 'error');
         }else{
-            selectedRows = [...selectedRows];
+            selectedRows = [...selectedRows]; 
             const match =  this.configDataBackup.filter(s => selectedRows.includes(s.id));
             this.showSpinner = true;
             saveConfigRecords({payload : JSON.stringify(match), caseId:this.recordId}).then(response =>{
@@ -95,9 +100,11 @@ export default class AvailableConfig extends LightningElement {
                 // Notify LDS that you've changed the record outside its mechanisms.
                 getRecordNotifyChange([{recordId: this.recordId}])
                 this.showToast('Success','Case Configs created successfully', 'success');
+                publish(this.messageContext,CONFIG_SAVED,null);
                 return refreshApex(this.refreshPage());
                 
             }).catch(error=>{
+                console.log('error---',error);
                 this.showToast('Error',error.description.message, 'error');
                 this.showSpinner = false;
             })      
