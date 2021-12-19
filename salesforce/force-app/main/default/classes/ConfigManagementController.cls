@@ -49,4 +49,17 @@ public with sharing class ConfigManagementController {
         public String Type;
         public Integer Amount;
     }
+    /*
+    * @Purpose : method to show case config records
+    */
+    @AuraEnabled
+    public static List<Available_Config__c> getCaseConfigRecords(String caseId){
+
+        try {
+            List<Available_Config__c> availableConfigList = [SELECT ID, Label__c,Amount__c,Type__c FROM Available_Config__c WHERE case__c =: caseId];
+            return availableConfigList;                                
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
 }
