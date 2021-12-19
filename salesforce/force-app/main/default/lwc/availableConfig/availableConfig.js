@@ -21,8 +21,10 @@ export default class AvailableConfig extends LightningElement {
     configDataBackup; //variable to hold config record in backup
     result;
     saveEvent = false;
+    disableAddButton = false;
     @api recordId;
     @wire(MessageContext)
+    showcheckboxcolumn = true;
     messageContext;
 
     //this method will be called on component load
@@ -33,22 +35,28 @@ export default class AvailableConfig extends LightningElement {
     refreshPage(){
         //apex call to get available config records.
         getAvailableConfigRecords({'caseId':this.recordId}).then(response => {
-            if(response.length > 0){
-                this.configData = [];
-                response.forEach(config => {
-                    this.configData.push({'Label' : config.Label__c,
-                                        'Type' : config.Type__c, 
-                                        'Amount' : config.Amount__c,
-                                        'id':config.Id})
-                })
-                this.noConfigRecords = false; 
-                this.configDataBackup = this.configData;
-                this.configData = [...this.configData];
-                if(this.saveEvent){ //once data saved refresh child component
-                    this.saveEvent = false;
-                    this.template.querySelector('c-table-pagination-lwc').refreshComp(this.configData);
-                }  
-            }
+            if(response){
+                if(response.caseConfigs && response.caseConfigs.length > 0){
+                    this.configData = [];
+                    response.caseConfigs.forEach(config => {
+                        this.configData.push({'Label' : config.Label,
+                                            'Type' : config.Type, 
+                                            'Amount' : config.Amount,
+                                            'id':config.recordId})
+                    })
+                    this.noConfigRecords = false; 
+                    this.configDataBackup = this.configData;
+                    this.configData = [...this.configData];
+                    if(this.saveEvent){ //once data saved refresh child component
+                        this.saveEvent = false;
+                        this.template.querySelector('c-table-pagination-lwc').refreshComp(this.configData);
+                    } 
+                }
+                if(response.status == 'Closed'){
+                    this.disableAddButton = true;
+                    this.showcheckboxcolumn = false;
+                }
+            }        
             this.showSpinner = false;
         }).catch(error => {
             this.showToast('Error',error.description.message, 'error');

@@ -21,7 +21,7 @@
                         variant="brand"
                         title="Search"
                         label="Search"
-                        icon-name="utility:search"
+                        icon-name="utility:search" 
                         icon-position="right"
                         onclick={searchConfigs}
                         ></lightning-button>
@@ -36,6 +36,7 @@
                         label="Add"
                         icon-name="utility:save"
                         icon-position="right"
+                        disabled={disableAddButton}
                         onclick={saveConfigs}
                         ></lightning-button>
                     </div>
@@ -47,7 +48,7 @@
                         show-table="true"
                         columns={columns}
                         recordsperpage="8"
-                        show-checkbox-column-param = true
+                        show-checkbox-column-param = {showcheckboxcolumn}
                         onactions={handleRowActions}
                         onpagination={handlePagination}
                         >
