@@ -1,5 +1,13 @@
+/**
+ * @Created By : Aayushi Agrawal
+ * @Created Date : 19 December, 2021
+ * @Purpose : Test class for ConfigManagementController
+ */
 @isTest
 private class ConfigManagementController_IsTest {
+    /**
+     * @Purpose : test method to create test data
+     */
     @TestSetup
     static void makeData(){
         List<Case> caseRecordsToInsert = new List<Case>();
@@ -13,15 +21,24 @@ private class ConfigManagementController_IsTest {
         }
         insert configToInsert;
     }
+    /**
+     * @Purpose : test method to cover getAvailableConfigRecords
+     */
     static testMethod void getAvailableConfigRecords(){
         List<Case> caseList = [SELECT ID FROM Case LIMIT 1];
+        Test.startTest();
         ConfigManagementController.CaseWrapper response = ConfigManagementController.getAvailableConfigRecords(caseList[0].Id);
+        Test.stopTest();
         System.assertEquals(response.caseConfigs.size(), 200);
     }
+    /**
+     * @Purpose : test method to cover saveconfigRecords method
+     */
     static testMethod void saveConfigRecords(){
         List<Case> caseList = [SELECT ID FROM Case LIMIT 1];
         List<Config__c> configsSelected = [SELECT ID,Label__c,Type__c,Amount__C FROM Config__c LIMIT 90]; // select 100 records to save
         List<ConfigManagementController.ConfigWrapper> request = new List<ConfigManagementController.ConfigWrapper>();
+        Test.startTest();
         for(Config__c config : configsSelected){
             ConfigManagementController.ConfigWrapper configWrap = new ConfigManagementController.ConfigWrapper();
             configWrap.Label = config.Label__c;
@@ -36,15 +53,23 @@ private class ConfigManagementController_IsTest {
         System.assertEquals(response.caseConfigs.size(), 110); // new response will have 110 records as 90 saved in case config out of 200
         ConfigManagementController.CaseWrapper response1 =  ConfigManagementController.getCaseConfigRecords(caseList[0].Id);
         System.assertEquals(response1.caseConfigs.size(), 90); // this will have 90 case config records saved in previous step
-        
+        Test.stopTest();
     }
+    /**
+     * @Purpose : test method to cover updateCaseRecord method 
+     */
     static testMethod void updateCaseRecord(){
         List<Case> caseList = [SELECT ID FROM Case LIMIT 1];
+        Test.startTest();
         ConfigManagementController.updateCaseRecord(caseList[0].Id);
         Case c = [SELECT Id,Status FROM Case WHERe Id =: caseList[0].Id];
         System.assertEquals(c.Status, 'Closed'); // Status updated to closed
+        Test.stopTest();
         
     }
+    /**
+     * @Purpose : test method to cover sendCaseConfigDetailToExternalService method
+     */
     static testMethod void sendCaseConfigDetailToExternalService(){
         Test.setMock(HttpCalloutMock.class, new ConfigManagementController_IsMock());
         Test.startTest();

@@ -63,19 +63,20 @@ export default class CaseConfigs extends LightningElement {
                                                 Amount :caseConfig.Amount,
                                                 Id : caseConfig.RecordId})
                     })
-                    this.showSpinner = false;
                     this.noConfigRecords = false; 
-                    if(saveEvent){ //once data saved refresh child component
-                        this.template.querySelector('c-table-pagination-lwc').refreshComp(this.caseConfigRecords); 
-                    }  
+                    if(saveEvent ){ //once data saved refresh child component 
+                        if(this.template.querySelector('c-table-pagination-lwc')){
+                            this.template.querySelector('c-table-pagination-lwc').refreshComp(this.caseConfigRecords); 
+                        }
+                    }
                 }
                 if(response.status == 'Closed'){
                     this.sendButtonDisabled = true;
                 }
-            }
-            
-            
-        }).catch(error =>{
+            }           
+            this.showSpinner = false;
+        }).catch(error =>{ 
+            console.log('error e',error);
             this.showToast('Error',error.description.message, 'error');
         })
     }

@@ -6,7 +6,7 @@
         <div class="slds-m-aroung_small">
         <template if:true={showTable}>
             <template if:true={showCheckboxColumnParam}>
-                <lightning-datatable
+                <!--<lightning-datatable
                 key-field="id"
                 data={recordsToDisplay}
                 show-row-number-column="false"
@@ -21,7 +21,24 @@
                 selected-rows={preSelectedRows}
                 onrowselection={rowSelectionEvent}
                 >
-                </lightning-datatable>
+                </lightning-datatable>-->
+                <lightning-datatable
+                key-field="id"
+                data={recordsToDisplay} 
+                show-row-number-column="false"
+                show-checkbox-column
+                columns={columns}
+                onrowaction={handleRowAction}
+                default-sort-direction={defaultSortDirection}
+                sorted-direction={sortDirection}
+                sorted-by={sortedBy}
+                onsort={onHandleSort}
+                onsave={handleSave} 
+                draft-values={draftValues} 
+                selected-rows={preSelectedRows}
+                onrowselection={rowSelectionEvent}
+            >
+            </lightning-datatable>
             </template>
             <template if:false={showCheckboxColumnParam}>
                 <lightning-datatable

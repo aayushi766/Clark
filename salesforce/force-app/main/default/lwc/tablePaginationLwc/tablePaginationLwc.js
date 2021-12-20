@@ -166,6 +166,7 @@ export default class TablePaginationLwc extends LightningElement {
     getSelectedRows() {
         return this.preSelectedRows;
     }
+    
     rowSelectionEvent(evt){
         // List of selected items from the data table event.
         let updatedItemsSet = new Set();
@@ -173,19 +174,28 @@ export default class TablePaginationLwc extends LightningElement {
         let selectedItemsSet = new Set(this.preSelectedRows);
         // List of items currently loaded for the current view.
         let loadedItemsSet = new Set();
+
+
         this.recordsToDisplay.forEach((event) => {
             loadedItemsSet.add(event.id);
-        });
-        if (evt.detail.selectedRows) {
+        }); 
+        console.log('loadedItemsSet---',loadedItemsSet)
+
+        if (evt.detail.selectedRows) { 
+            console.log('evt.detail.selectedRows---',evt.detail.selectedRows)
+ 
             evt.detail.selectedRows.forEach((event) => {
                 updatedItemsSet.add(event.id);
             });
+            console.log('updatedItemsSet---',updatedItemsSet)
+
             // Add any new items to the selection list
             updatedItemsSet.forEach((id) => {
                 if (!selectedItemsSet.has(id)) {
                     selectedItemsSet.add(id);
                 }
-            });        
+            });     
+               
         }
         loadedItemsSet.forEach((id) => {
             if (selectedItemsSet.has(id) && !updatedItemsSet.has(id)) {
@@ -193,8 +203,11 @@ export default class TablePaginationLwc extends LightningElement {
                 selectedItemsSet.delete(id);
             }
         });
+
+
         this.preSelectedRows = [...selectedItemsSet];
         this.preSelectedRowsBackup = this.preSelectedRows;
+        console.log('---selection---'+JSON.stringify(this.preSelectedRows));
         return refreshApex(this.preSelectedRows );
     }
-}
+} 

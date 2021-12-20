@@ -36,7 +36,7 @@ export default class AvailableConfig extends LightningElement {
         this.subscription = subscribe(
         this.messageContext,
         CONFIG_SAVED,
-        (message) => this.disableAddButton = true
+        (message) => this.refreshPage()
         
         );
         
@@ -62,7 +62,7 @@ export default class AvailableConfig extends LightningElement {
                         this.configData.push({'Label' : config.Label,
                                             'Type' : config.Type, 
                                             'Amount' : config.Amount,
-                                            'id':config.recordId})
+                                            'id':config.RecordId})
                     })
                     this.noConfigRecords = false; 
                     this.configDataBackup = this.configData;
