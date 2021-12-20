@@ -112,7 +112,7 @@ public with sharing class ConfigManagementController {
             Http http = new Http();
             HTTPResponse res = http.send(req);
             boolean allOk = res.getStatusCode() == 200 ?  true :  false;
-            return allOk;
+            return allOk; 
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
