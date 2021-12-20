@@ -111,8 +111,8 @@ public with sharing class ConfigManagementController {
             req.setBody(payload);
             Http http = new Http();
             HTTPResponse res = http.send(req);
-            boolean isError = res.getStatusCode() == 200 ?  true :  false;
-            return isError;
+            boolean allOk = res.getStatusCode() == 200 ?  true :  false;
+            return allOk;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
